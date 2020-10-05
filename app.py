@@ -1,30 +1,10 @@
-from flask import Flask, request, send_file
-from flaskwebgui import FlaskUI 
 from model import *
+from leitura import *
+from otimizar import *
+from pandas import *
 
-app = Flask(__name__)
 
-ui = FlaskUI(app)
-
-@app.route("/")
-def index():
-  return send_file("index.html")
-
-ui.run()
-
-projetos_disponiveis = [Projeto(100, [10, 20, 30, 40]),
-        Projeto(200, [20, 20, 40, 10]),
-        Projeto(100, [30, 20, 30, 20]),
-        Projeto(200, [20, 10, 0, 70])]
-
-metas = {
-    "Meta1": 20,
-    "Meta2": 40,
-    "Meta3": 30,
-    "Meta4": 10
-    }
-
-empresa = Empresa(projetos_disponiveis, metas)
-
-OtimizarPortifolio(empresa)
-empresa.portifolio
+if __name__ == '__main__':
+    empresa = Empresa(ler_projetos_csv("entradas/GUT-projetos-1.csv"), ler_metas_empresa_csv("entradas/GUT-metas-1.csv"))
+    otimizacao = OtimizarPortifolio(empresa)
+    print(empresa.portifolio)
